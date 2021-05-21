@@ -11,33 +11,33 @@ namespace ConsoleUI
         {
             //ProductTest();
 
-            ProductManager productManager = new ProductManager(new EfProductDal());
+            //ProductManager productManager = new ProductManager(new EfProductDal());
 
-            var result = productManager.GetProductDetails();
-            if (result.Success == true)
-            {
-                foreach (var product in productManager.GetProductDetails().Data)
-                {
-                    Console.WriteLine(product.ProductName + " --- " + product.CategoryName);
-                }
-            }
-            else
-            {
-                Console.WriteLine(result.Message);
-            }
+            //var result = productManager.GetProductDetails();
+            //if (result.Success == true)
+            //{
+            //    foreach (var product in productManager.GetProductDetails().Data)
+            //    {
+            //        Console.WriteLine(product.ProductName + " --- " + product.CategoryName);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
 
 
             Console.ReadKey();
         }
 
-        private static void ProductTest()
-        {
-            ProductManager productManager = new ProductManager(new EfProductDal());
+        //private static void ProductTest()
+        //{
+        //    ProductManager productManager = new ProductManager(new EfProductDal());
 
-            foreach (var product in productManager.GetByUnitPrice(40, 100).Data)
-            {
-                Console.WriteLine($"{product.ProductName}---{product.UnitPrice}---{product.UnitsInStock}---{product.CategoryId}");
-            }
-        }
+        //    foreach (var product in productManager.GetByUnitPrice(40, 100).Data)
+        //    {
+        //        Console.WriteLine($"{product.ProductName}---{product.UnitPrice}---{product.UnitsInStock}---{product.CategoryId}");
+        //    }
+        //}
     }
 }
