@@ -45,7 +45,6 @@ namespace WebAPI
                 options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://lýcalhost:3000"));
             });
 
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -74,7 +73,7 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            //farklý domainlere göre konfigürasyon verebiliriz
+            //farkli domainlere göre konfigurasyon verebiliriz
             app.UseCors(builder => builder.WithOrigins("http://localhost:300").AllowAnyHeader());
 
             app.UseHttpsRedirection();
