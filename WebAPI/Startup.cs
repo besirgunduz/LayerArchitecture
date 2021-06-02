@@ -39,7 +39,13 @@ namespace WebAPI
             //services.AddSingleton<IProductService,ProductManager>();
             //services.AddSingleton<IProductDal,EfProductDal>();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //bu adresten gelen isteklere izin ver
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://lýcalhost:3000"));
+            });
+
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -68,6 +74,8 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            //farklý domainlere göre konfigürasyon verebiliriz
+            app.UseCors(builder => builder.WithOrigins("http://localhost:300").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
