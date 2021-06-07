@@ -4,6 +4,9 @@ using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
@@ -26,8 +29,9 @@ namespace Business.Concrete
             _categoryService = categoryService; //dikkat et service'i alıyorsun.
         }
 
-        [SecuredOperation("product.add,admin")]
+        [SecuredOperation("Product.Add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             //business codes
@@ -72,14 +76,15 @@ namespace Business.Concrete
         {
             var result = _categoryService.GetAll();
 
-            if (result.Data.Count > 7)
+            if (result.Data.Count > 15)
             {
-                return new ErrorResult("Kategori sayısı 7'yi geçemez");
+                return new ErrorResult("Kategori sayısı 15'yi geçemez");
             }
 
             return new SuccessResult();
         }
 
+        [CacheAspect]
         public IDataResult<List<Product>> GetAll()
         {
             if (DateTime.Now.Hour == 03)
@@ -95,6 +100,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
         }
 
+        [CacheAspect]
+        [PerformanceAspect(1)]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
@@ -116,16 +123,24 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Product product)
         {
             var result = _productDal.GetAll(p => p.CategoryId == product.CategoryId).Count;
-            if (result < 10)
+            if (result > 10)
             {
-                _productDal.Add(product);
-                return new SuccessResult();
+                return new ErrorResult("Kategorideki ürün sayısı en fazla 10 olabilir.");
             }
 
-            return new ErrorResult("Kategorideki ürün sayısı en fazla 10 olabilir.");
+            return new SuccessResult();
+
+            
+        }
+
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Product product)
+        {
+            throw new NotImplementedException();
         }
     }
 }

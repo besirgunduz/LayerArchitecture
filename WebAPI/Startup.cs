@@ -1,5 +1,7 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.DependencyResolvers;
+using Core.Extension;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
@@ -36,13 +38,12 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //services.AddSingleton<IProductService,ProductManager>();
-            //services.AddSingleton<IProductDal,EfProductDal>();
+
 
             //bu adresten gelen isteklere izin ver
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://lýcalhost:3000"));
+                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:3000"));
             });
 
 
@@ -63,7 +64,9 @@ namespace WebAPI
                     };
                 });
 
-            ServiceTool.Create(services);
+            services.AddDependencyResolvers(new ICoreModule[] {
+                new CoreModule()
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
