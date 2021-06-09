@@ -34,7 +34,6 @@ namespace Business.Concrete
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
-            //business codes
             // kuralların hepsine uyuyorsa null,uymuyorsa uymayanı getirir.
             IResult result = BusinessRules.Run(CheckIfProductNameExists(product.ProductName), CheckIfProductCountOfCategoryCorrect(product.CategoryId), CheckIfCategoryCount());
 
