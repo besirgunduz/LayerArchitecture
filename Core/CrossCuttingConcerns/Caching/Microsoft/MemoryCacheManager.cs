@@ -15,6 +15,7 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
         IMemoryCache _memoryCache;
         public MemoryCacheManager()
         {
+            //servis altyapısına erişmek için
             _memoryCache = ServiceTool.ServiceProvider.GetService<IMemoryCache>();
         }
 

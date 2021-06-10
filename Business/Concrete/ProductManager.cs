@@ -31,7 +31,7 @@ namespace Business.Concrete
 
         [SecuredOperation("Product.Add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
-        [CacheRemoveAspect("IProductService.Get")]
+        [CacheRemoveAspect("IProductService.Get")]//Get ile başlayan metottaki bütün cacheleri siler
         public IResult Add(Product product)
         {
             // kuralların hepsine uyuyorsa null,uymuyorsa uymayanı getirir.
@@ -99,7 +99,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
         }
 
-        [CacheAspect]
+        [CacheAspect(1)]
         [PerformanceAspect(1)]
         public IDataResult<Product> GetById(int productId)
         {
@@ -133,13 +133,15 @@ namespace Business.Concrete
 
             return new SuccessResult();
 
-            
+
         }
 
         [TransactionScopeAspect]
-        public IResult AddTransactionalTest(Product product)
+        public IResult TransactionalTest(Product product)
         {
-            throw new NotImplementedException();
+            //_productDal.Update(product);
+            _productDal.Add(product);
+            return new SuccessResult(Messages.ProductAdded);
         }
     }
 }

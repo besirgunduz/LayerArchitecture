@@ -9,6 +9,7 @@ namespace Core.Aspects.Autofac.Transaction
 {
     public class TransactionScopeAspect : MethodInterception
     {
+        //intercept metodunu ezdik çünkü  metodun yaşam döngüsünde işlem yapacaz
         public override void Intercept(IInvocation invocation)
         {
             using (TransactionScope transactionScope = new TransactionScope())

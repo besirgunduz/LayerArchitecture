@@ -19,7 +19,7 @@ namespace Core.DependencyResolvers
         {
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             serviceCollection.AddMemoryCache(); //hazır bir instance oluşturur.
-            serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
+            serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>(); //başka bir cache yapısına geçince değiştir
             serviceCollection.AddSingleton<Stopwatch>();
         }
     }
