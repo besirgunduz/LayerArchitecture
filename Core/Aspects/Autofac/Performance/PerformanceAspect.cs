@@ -9,10 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Aspects.Autofac.Performance
 {
+    //örneğin sistem yavaş bu durumda geçen süreyi hesaplamak istiyoruz.
     public class PerformanceAspect : MethodInterception
     {
-        private int _interval;
-        private Stopwatch _stopwatch;
+        private int _interval; //geçen süre
+        private Stopwatch _stopwatch; //kronometre
 
         public PerformanceAspect(int interval)
         {

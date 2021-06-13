@@ -16,6 +16,7 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Business.Concrete
 {
@@ -83,9 +84,13 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [CacheAspect]
+        //[SecuredOperation("Product.List,Admin")]
+        //[CacheAspect]
+        [PerformanceAspect(5)] //eğer 5 sn yi geçerse bize bildirir.
         public IDataResult<List<Product>> GetAll()
         {
+            Thread.Sleep(5000); //performans takip testi
+
             if (DateTime.Now.Hour == 03)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
@@ -94,13 +99,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);
         }
 
+        [SecuredOperation("Product.List,Admin")]
+        [CacheAspect(20)]
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
         }
 
         [CacheAspect(1)]
-        [PerformanceAspect(1)]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
