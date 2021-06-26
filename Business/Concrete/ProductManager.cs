@@ -86,10 +86,10 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        //[SecuredOperation("Product.List,Admin")]
+        [SecuredOperation("Product.List,Admin")]
         [CacheAspect]
-        //[PerformanceAspect(5)] //eğer 5 sn yi geçerse bize bildirir.
-        //[LogAspect(typeof(DatabaseLogger))]
+        [PerformanceAspect(5)] //eğer 5 sn yi geçerse bize bildirir.
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<Product>> GetAll()
         {
             Thread.Sleep(5000); //performans takip testi
