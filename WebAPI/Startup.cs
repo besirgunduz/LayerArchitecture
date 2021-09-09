@@ -44,11 +44,7 @@ namespace WebAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:3000"));
-            });
-
+            services.AddCors();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -78,8 +74,8 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            //farkli domainlere göre konfigurasyon verebiliriz
-            app.UseCors(builder => builder.WithOrigins("http://localhost:300").AllowAnyHeader());
+
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
