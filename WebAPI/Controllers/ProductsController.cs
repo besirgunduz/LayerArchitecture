@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -26,6 +27,8 @@ namespace WebAPI.Controllers
         //[Authorize(Roles = "Product.List")]
         public IActionResult GetAll()
         {
+            Thread.Sleep(1000);
+
             var result = _productService.GetAll();
             if (result.Success == true)
             {
@@ -38,6 +41,17 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int id)
         {
             var result = _productService.GetById(id);
+            if (result.Success == true)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("getbycategory")]
+        public IActionResult GetByCategory(int id)
+        {
+            var result = _productService.GetAllByCategoryId(id);
             if (result.Success == true)
             {
                 return Ok(result);
